@@ -3,16 +3,10 @@ from django.http import HttpResponse
 
 # Create your views here.
 def sayHi(request):
-    return HttpResponse('Say Hi')
+    return HttpResponse('Hello From First Django App!')
 
+def greet(request,name='Guest'):
+    return HttpResponse(f'Welcome Home {name}')
 
-def greet(request,name:str):
-    return HttpResponse(f'<h1>Hello  {name.title()}</h1>')
-
-
-def showHome(request):
-    names = ['Abdallah','Eman','Amir','Yusuf','Malik','Ali','Ahmed']
-    context = {
-        'names':names
-    }
-    return render(request,'home.html',context=context)
+def home(request):
+    return HttpResponse('Welcome From Home Page!')

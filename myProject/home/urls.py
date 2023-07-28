@@ -1,9 +1,13 @@
-
-from home.views import *
 from django.urls import path
+from home.views import home,sayHi
+# from  .views import home
+
 
 urlpatterns = [
-    path('',showHome,name='home'),
-    path('sayHi/',sayHi,name='sayHi'),
-    path('greet/',greet,name='greet'),
+    path('',home),
+    path('hi/',sayHi)
 ]
+
+
+# http://127.0.0.1:8000/home/
+# http://127.0.0.1:8000/home/hi
