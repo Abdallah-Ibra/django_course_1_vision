@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # My APPS
     'home',
+    'services',
+    'about',
+    'portfolio',
+    'team',
+    'contact',
 ]
 
 MIDDLEWARE = [
@@ -121,7 +126,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    "/var/www/static/",
 ]
 
 
