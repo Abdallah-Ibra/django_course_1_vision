@@ -1,0 +1,26 @@
+TODO LIST: 
+
+1. Introduction to Bootstrap, html tag name, tag attributes.
+
+2. Passing django variables into html templates (django html tags, django html filter).
+
+3. Overview about django models (Databases Engines). 
+    |_ SQL : Structured Query Language [sqlite3, MYSQL, PostgreSQL] _
+    |                                                                |_ Relationships [1. OnetoOne 2. OnetoMany 3. ManytoMany]
+    |
+    |_ NO SQL
+
+
+
+4. django models fields.
+
+5. How to integrate MYSQL DB with Django.
+
+
+- frontend:                                       |==> TAGS: <tagname> | <tagname attributes></tagname>
+    |                                             |
+    |__ HTML: Hyper Text Markup Language.(html5) --
+    |  |_ Bootstrap Framework.
+    |
+    |_ CSS: Cascade Style Sheet.
+    |_ JS
