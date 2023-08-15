@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+    <body>
+        
+        <div class="container-fluid mx-auto center text-center mt-3">
+            <div class="card mt-5 mx-auto center text-center" style="width: 90%">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <span class="badge text-bg-info"><h5>Total Data: {{ data.count }}</h5></span>
+                        </div>
+                        <div class="col">
+                            <h2 class="card-title" style="color: red;">
+                                List Data Page
+                            </h2>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'home:add_data' %}" class="btn btn-success fw-bold">Add New Data</a>
+                        </div>
+                        </div>
+                    </div>
+                    <p class="card-text mx-auto m-3">
+                        <table class="table table-striped-columns table-hover">
+                                <thead class="table-dark table-active">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for dat in data %}
+                                        
+                                        <tr>
+                                            <th scope="row">{{ dat.id }}</th>
+                                            <td> {{ dat.name }} </td>
+                                            <td> {{ dat.email }} </td>
+                                            <td> {{ dat.phone }} </td>
+                                            <td> 
+                                                {% if dat.image%}
+                                                    <img width="120" height="100" src="{{ dat.image.url }}" alt="{{ dat.name }} Image" style="border-radius: 10%;"> </td>
+                                                {% else %}
+                                                    <img width="100" height="100" src="{% static 'imgs/default.png' %}" alt="{{ dat.name }} Image" style="border-radius: 10%;"> </td>
+                                                {% comment %} <span><i class="fa-solid fa-user fa-lg" style="color: #0c50ed;"></i></span> {% endcomment %}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a class="btn text-primary px-0" href="{% url 'home:edit_data' dat.id %}"><i class="far fa-edit fa-lg"></i></a>
+                                                <a class="btn text-primary px-0" href="{% url 'home:destroy_data' dat.id %}"><i class="far fa-trash-alt fa-lg text-danger float-right"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                        </table>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    </body>
+</html>
