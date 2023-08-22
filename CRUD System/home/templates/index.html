@@ -15,6 +15,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
+                            {% comment %} <span class="badge-primary fw-bold"> Total Data: {{data|length}} </span> {% endcomment %}
                             <span class="badge text-bg-info"><h5>Total Data: {{ data.count }}</h5></span>
                         </div>
                         <div class="col">
@@ -23,7 +24,7 @@
                             </h2>
                         </div>
                         <div class="col">
-                            <a href="{% url 'home:add_data' %}" class="btn btn-success fw-bold">Add New Data</a>
+                            <a href="{% url 'home:create_data' %}" class="btn btn-primary fw-bold">Create New Data</a>
                         </div>
                         </div>
                     </div>
@@ -49,16 +50,17 @@
                                             <td> {{ dat.email }} </td>
                                             <td> {{ dat.phone }} </td>
                                             <td> 
-                                                {% if dat.image%}
-                                                    <img width="120" height="100" src="{{ dat.image.url }}" alt="{{ dat.name }} Image" style="border-radius: 10%;"> </td>
-                                                {% else %}
-                                                    <img width="100" height="100" src="{% static 'imgs/default.png' %}" alt="{{ dat.name }} Image" style="border-radius: 10%;"> </td>
-                                                {% comment %} <span><i class="fa-solid fa-user fa-lg" style="color: #0c50ed;"></i></span> {% endcomment %}
+                                                {% if dat.image %}
+                                                    <img width="120" height="100" src="{{ dat.image.url }}" alt="{{ dat.name }} Image" style="border-radius: 10%;">
+                                                {%else%}
+                                                    <img width="100" height="100" src="{% static 'imgs/default.png' %}" alt="{{ dat.name }} Image" style="border-radius: 10%;">
                                                 {% endif %}
                                             </td>
                                             <td>
-                                                <a class="btn text-primary px-0" href="{% url 'home:edit_data' dat.id %}"><i class="far fa-edit fa-lg"></i></a>
-                                                <a class="btn text-primary px-0" href="{% url 'home:destroy_data' dat.id %}"><i class="far fa-trash-alt fa-lg text-danger float-right"></i></a>
+                                                <div class="form-group d-flex justify-content-center text-center justify-items-center p-3">
+                                                    <a href="{% url 'home:edit_data' dat.id %}" class="btn btn-success me-2">Edit</a>
+                                                    <a href="{% url 'home:destroy_data' dat.id %}" class="btn btn-danger me-2">Delete</a>
+                                                </div>
                                             </td>
                                         </tr>
                                     {% endfor %}
