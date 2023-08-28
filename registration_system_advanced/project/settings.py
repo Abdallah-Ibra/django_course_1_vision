@@ -41,8 +41,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
     # ** MY APPS
     "home",
+    
+    # ? External Apps
+    "bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -115,6 +119,15 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+# Configuire Outlook email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'Your Email'  
+EMAIL_HOST_PASSWORD = 'Your Password APP' # This an App Password, Got it from (Manage Account -> Security -> Apps Passwords)
+EMAIL_USER_TLS = True
 
 
 # Internationalization
