@@ -24,3 +24,7 @@ urlpatterns = [
     path('about-us/',include('about.urls',namespace='about')),
     path('blogs/',include('blog.urls',namespace='blogs')),
 ]
+from django.conf import settings
+from django.conf.urls.static import static
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

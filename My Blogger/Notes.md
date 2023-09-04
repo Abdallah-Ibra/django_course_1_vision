@@ -44,3 +44,11 @@
     1. Static Files
     2. Media Files
     3. Templates
+
+
+
+
+### Django RelationShips 👍
+    - One --> One [models.oneToOne]
+    - One --> Many [models.Foreignkey] || Category --> Blog
+    - Many --> Many [models.ManyToMany] || Comment --> Blog
