@@ -1,0 +1,53 @@
+{% load static %}
+<nav class="colorlib-nav" role="navigation">
+  <div class="top-menu">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-2">
+          <div id="colorlib-logo">
+            <a href="{% url 'home:home' %}">Stuff</a>
+          </div>
+        </div>
+        <div class="col-xs-10 text-right menu-1">
+          <ul>
+            <li class="active">
+              <a href="{% url 'home:home' %} ">Home</a>
+            </li>
+            <li class="item">
+              <a href="{% url 'blogs:blog_list' %}">Blogs</a>
+              {% comment %} <ul class="dropdown">
+                <li>
+                  <a href="single.html">Blog Single</a>
+                </li>
+                <li>
+                  <a href="#">Video</a>
+                </li>
+                <li>
+                  <a href="#">Read</a>
+                </li>
+                <li>
+                  <a href="#">Lifestyle</a>
+                </li>
+              </ul> {% endcomment %}
+            </li>
+            <li class="item">
+              <a href="{% url 'about:about' %}">About Me</a>
+            </li>
+            <li class="item">
+              <a href="{% url 'contact:contact' %}">Contact US</a>
+            </li>
+            <li class="item btn btn-success ms-3 ps-3">
+              <a href="#">Login</a>
+            </li>
+            <li class="item btn btn-danger ms-3 ps-3">
+              <a href="#">Logout</a>
+            </li>
+            <li class="item btn btn-primary ms-3 ps-3">
+              <a href="#">Signup</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

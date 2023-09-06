@@ -51,4 +51,8 @@
 ### Django RelationShips 👍
     - One --> One [models.oneToOne]
     - One --> Many [models.Foreignkey] || Category --> Blog
-    - Many --> Many [models.ManyToMany] || Comment --> Blog
+    - Many --> Many [models.ManyToMany] || Tags --> Blogs
+
+
+
+## Category --> Blog [models.ForeignKey]
