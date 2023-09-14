@@ -26,10 +26,6 @@ urlpatterns = [
     path("blogs/", include("blog.urls", namespace="blogs")),
     path("admin/", admin.site.urls),
     
-    
-    #**# API
-    path('api/',include('api.urls', namespace='api'))
-    
 ]
 
 from django.conf.urls.static import static
