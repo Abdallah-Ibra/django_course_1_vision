@@ -1,5 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load bootstrap5 %}
+{% load humanize %}
 
 {% block content %}
   <aside id="colorlib-breadcrumbs">
@@ -8,13 +10,13 @@
         <div class="col-md-12 breadcrumbs text-center">
           <h2>Blog detail</h2>
           <p>
-            <span><a href="index.html">Home</a></span> / <span><a href="blog.html">Blog</a></span> / <span>Blog Single</span>
+            <span><a href="{% url 'home:home' %}">Home</a></span> / <span><a href="{% url 'blog:blog_list' %}">Blogs</a></span> / <span>Blog Details</span>
           </p>
         </div>
       </div>
     </div>
   </aside>
-
+  
   <div id="colorlib-container">
     <div class="container">
       <div class="row">
@@ -28,8 +30,10 @@
                 <div class="desc">
                   <p class="meta">
                     <span class="cat"><a href="#">{{ blog.category }}</a></span>
-                    <span class="date">{{ blog.published_at|date:'D d M Y' }}</span>
+                    {% comment %} <span class="date">{{ blog.created_at|date:'D d M Y' }}</span> {% endcomment %}
+                    <span class="date">{{ blog.created_at|naturaltime }}</span>
                     <span class="pos">By <a href="#">{{ blog.author.first_name }} {{ blog.author.last_name }}</a></span>
+                    <span class="pos"><a href="#">{{ total_likes }} Likes</a></span>
                   </p>
                   <h2><a href="#">{{ blog.title }}</a></h2>
                   <p>{{ blog.description }}</p>
@@ -39,81 +43,90 @@
           </div>
           <div class="row row-pb-lg">
             <div class="col-md-12">
-              <h2 class="heading-2">23 Comments</h2>
-              <div class="review">
-                <div class="user-img" style="background-image: url({% static 'images/person1.jpg' %})"></div>
-                <div class="desc">
-                  <h4>
-                    <span class="text-left">Jacob Webb</span>
-                    <span class="text-right">24 March 2018</span>
-                  </h4>
-                  <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-                  <p class="star">
-                    <span class="text-left"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
-                  </p>
+              <h2 class="heading-2">{{ total_comments }} Comments</h2>
+
+              {% for comment in comments %}
+                
+                <div class="review">
+                  {% comment %} <div class="user-img" style="background-image: url({% static 'images/person1.jpg' %})"></div> {% endcomment %}
+                  {% comment %} <div class="user-img" style="background-image: url({{ user.profile.image.url }})"></div> {% endcomment %}
+                  <div class="user-img" style="background-image: url({{ comment.image.url }})"></div>
+                  <div class="desc">
+                    <h4>
+                      <span class="text-left">{{ comment.first_name }} {{ comment.last_name }}</span>
+                      {% comment %} <span class="text-right">{{ comment.created_at|date:'d F Y' }}</span> {% endcomment %}
+                      <span class="text-right">{{ comment.created_at|naturaltime }}</span>
+                    </h4>
+                    <p>{{ comment.text }}</p>
+                    {% comment %} <p class="star">
+                      <span class="text-left"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+                    </p> {% endcomment %}
+                  </div>
                 </div>
-              </div>
-              <div class="review">
-                <div class="user-img" style="background-image: url({% static 'images/person2.jpg' %})"></div>
-                <div class="desc">
-                  <h4>
-                    <span class="text-left">Jacob Webb</span>
-                    <span class="text-right">24 March 2018</span>
-                  </h4>
-                  <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-                  <p class="star">
-                    <span class="text-left"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
-                  </p>
-                </div>
-              </div>
-              <div class="review">
-                <div class="user-img" style="background-image: url({% static 'images/person3.jpg' %})"></div>
-                <div class="desc">
-                  <h4>
-                    <span class="text-left">Jacob Webb</span>
-                    <span class="text-right">24 March 2018</span>
-                  </h4>
-                  <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-                  <p class="star">
-                    <span class="text-left"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
-                  </p>
-                </div>
-              </div>
+              {% endfor %}
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <h2 class="heading-2">Say something</h2>
-              <form action="#">
+              <h2 class="heading-2">Write Your Comment</h2>
+              
+              <form method="POST">
+                {% csrf_token %}  
+                {% if not user.is_authenticated %}
+                <div class="row form-group">
+                    <div class="col-md-6">
+                      <!-- <label for="fname">First Name</label> -->
+                      <input type="text" id="fname" name="fname" class="form-control" placeholder="Your firstname" required/>
+                      {% comment %} {% bootstrap_field comment_form.first_name show_label=False %} {% endcomment %}
+                    </div>
+                    
+                    <div class="col-md-6">
+                      <!-- <label for="lname">Last Name</label> -->
+                      <input type="text" id="lname" name="lname" class="form-control" placeholder="Your lastname" required/>
+                      {% comment %} {% bootstrap_field comment_form.last_name show_label=False %} {% endcomment %}
+                    </div>
+                  </div>
+                
+                  <div class="row form-group">
+                    <div class="col-md-12">
+                      <!-- <label for="email">Email</label> -->
+                      <input type="text" id="email" name="email" class="form-control" placeholder="Your email address" required/>
+                      {% comment %} {% bootstrap_field comment_form.email show_label=False %} {% endcomment %}
+                    </div>
+                  </div>
+
+                {% else %}
                 <div class="row form-group">
                   <div class="col-md-6">
                     <!-- <label for="fname">First Name</label> -->
-                    <input type="text" id="fname" class="form-control" placeholder="Your firstname" />
+                    <input type="text" id="fname" name="fname" value="{{ user.first_name }}" class="form-control" placeholder="Your firstname" hidden style="display: none;"required/>
                   </div>
+                  
                   <div class="col-md-6">
                     <!-- <label for="lname">Last Name</label> -->
-                    <input type="text" id="lname" class="form-control" placeholder="Your lastname" />
+                    <input type="text" id="lname" name="lname" value="{{ user.last_name }}" class="form-control" placeholder="Your lastname" hidden style="display: none;"required/>
                   </div>
                 </div>
-
+              
                 <div class="row form-group">
                   <div class="col-md-12">
                     <!-- <label for="email">Email</label> -->
-                    <input type="text" id="email" class="form-control" placeholder="Your email address" />
+                    <input type="text" id="email" name="email" value="{{ user.email }}" class="form-control" placeholder="Your email address" hidden style="display: none;"required/>
                   </div>
                 </div>
-
-                <div class="row form-group">
+                {% endif %}
+                {% comment %} <div class="row form-group">
                   <div class="col-md-12">
                     <!-- <label for="subject">Subject</label> -->
-                    <input type="text" id="subject" class="form-control" placeholder="Your subject of this message" />
+                    <input type="text" id="subject" name="subject" class="form-control" placeholder="Your subject of this message" />
                   </div>
-                </div>
-
+                </div> {% endcomment %}
+                
                 <div class="row form-group">
                   <div class="col-md-12">
                     <!-- <label for="message">Message</label> -->
-                    <textarea name="message" id="message" cols="30" rows="10" class="form-control" placeholder="Say something about us"></textarea>
+                    <textarea name="message" id="message" name="message" cols="30" rows="10" class="form-control" placeholder="Say something about us"required></textarea>
+                    {% comment %} {% bootstrap_field comment_form.text show_label=False %} {% endcomment %}
                   </div>
                 </div>
                 <div class="form-group">
@@ -123,114 +136,48 @@
             </div>
           </div>
         </div>
+
         <div class="col-md-3">
           <div class="sidebar">
             <div class="side">
-              <div class="form-group">
-                <input type="text" class="form-control" id="search" placeholder="Enter any key to search..." />
-                <button type="submit" class="btn btn-primary"><i class="icon-search3"></i></button>
-              </div>
+
             </div>
             <div class="side">
               <h2 class="sidebar-heading">Categories</h2>
               <p>
                 <ul class="category">
-                  <li>
-                    <a href="#"><i class="icon-check"></i> Home</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="icon-check"></i> About Me</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="icon-check"></i> Blog</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="icon-check"></i> Travel</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="icon-check"></i> Lifestyle</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="icon-check"></i> Fashion</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="icon-check"></i> Health</a>
-                  </li>
+                  
+                  {% for category in categories %}
+                    <li>
+                      <a href="{% url 'blog:category_show' pk=category.pk %}"><i class="icon-check"></i> {{ category }}</a>
+                    </li>
+                  {% endfor %}
+
                 </ul>
               </p>
             </div>
             <div class="side">
               <h2 class="sidebar-heading">Recent Blog</h2>
-              <div class="f-blog">
-                <a href="blog.html" class="blog-img" style="background-image: url({% static 'images/blog-1.jpg' %});"></a>
-                <div class="desc">
-                  <h3><a href="blog.html">Be a designer</a></h3>
-                  <p class="admin">
-                    <span>25 March 2018</span>
-                  </p>
+              {% for recent_blog in recent_blogs %}
+                
+                <div class="f-blog">
+                  <a href="{% url 'blog:blog_detail' slug=recent_blog.slug %}" class="blog-img" style="background-image: url({{ recent_blog.image.url }});"></a>
+                  <div class="desc">
+                    <h3><a href="{% url 'blog:blog_detail' slug=recent_blog.slug %}">{{ recent_blog.title }}</a></h3>
+                    <p class="admin">
+                      <span>{{ recent_blog.created_at|date:'D d M Y' }}</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div class="f-blog">
-                <a href="blog.html" class="blog-img" style="background-image: url({% static 'images/blog-2.jpg' %});"></a>
-                <div class="desc">
-                  <h3><a href="blog.html">How to build website</a></h3>
-                  <p class="admin">
-                    <span>24 March 2018</span>
-                  </p>
-                </div>
-              </div>
-              <div class="f-blog">
-                <a href="blog.html" class="blog-img" style="background-image: url({% static 'images/blog-3.jpg' %});"></a>
-                <div class="desc">
-                  <h3><a href="blog.html">Create website</a></h3>
-                  <p class="admin">
-                    <span>23 March 2018</span>
-                  </p>
-                </div>
-              </div>
+              
+              {% endfor %}
+
             </div>
-            <div class="side">
-              <h2 class="sidebar-heading">Instagram</h2>
-              <div class="instagram-entry">
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-1.jpg' %});"></a>
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-2.jpg' %});"></a>
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-3.jpg' %});"></a>
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-4.jpg' %});"></a>
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-5.jpg' %});"></a>
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-6.jpg' %});"></a>
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-7.jpg' %});"></a>
-                <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-8.jpg' %});"></a>
-              </div>
-            </div>
-            <div class="side">
-              <div class="form-group">
-                <input type="text" class="form-control form-email text-center" id="email" placeholder="Enter your email" />
-                <button type="submit" class="btn btn-primary btn-subscribe">Subscribe</button>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="colorlib-instagram">
-    <div class="row">
-      <div class="col-md-12 col-md-offset-0 colorlib-heading text-center">
-        <h2>Instagram</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="instagram-entry">
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-1.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-2.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-3.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-4.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-5.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-6.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-7.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-8.jpg' %});"></a>
-      </div>
-    </div>
-  </div>
 {% endblock %}

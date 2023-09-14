@@ -18,13 +18,23 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include('home.urls',namespace='home')),
-    path('contact-us/',include('contact.urls',namespace='contact')),
-    path('about-us/',include('about.urls',namespace='about')),
-    path('blogs/',include('blog.urls',namespace='blogs')),
+    path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("", include("home.urls", namespace="home")),
+    path("contact-us/", include("contact.urls", namespace="contact")),
+    path("about-us/", include("about.urls", namespace="about")),
+    path("blogs/", include("blog.urls", namespace="blogs")),
+    path("admin/", admin.site.urls),
+    
+    
+    #**# API
+    path('api/',include('api.urls', namespace='api'))
+    
 ]
-from django.conf import settings
+
 from django.conf.urls.static import static
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+from django.conf import settings
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

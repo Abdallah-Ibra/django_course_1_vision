@@ -15,20 +15,6 @@
             </li>
             <li class="item">
               <a href="{% url 'blogs:blog_list' %}">Blogs</a>
-              {% comment %} <ul class="dropdown">
-                <li>
-                  <a href="single.html">Blog Single</a>
-                </li>
-                <li>
-                  <a href="#">Video</a>
-                </li>
-                <li>
-                  <a href="#">Read</a>
-                </li>
-                <li>
-                  <a href="#">Lifestyle</a>
-                </li>
-              </ul> {% endcomment %}
             </li>
             <li class="item">
               <a href="{% url 'about:about' %}">About Me</a>
@@ -36,15 +22,19 @@
             <li class="item">
               <a href="{% url 'contact:contact' %}">Contact US</a>
             </li>
-            <li class="item btn btn-success ms-3 ps-3">
-              <a href="#">Login</a>
-            </li>
-            <li class="item btn btn-danger ms-3 ps-3">
-              <a href="#">Logout</a>
-            </li>
-            <li class="item btn btn-primary ms-3 ps-3">
-              <a href="#">Signup</a>
-            </li>
+            
+            {% if not user.is_authenticated %}
+              <li class="item btn btn-success">
+                <a href="{% url 'login' %}" style="color: #000!important;font-weight: bold;">Login</a>
+              </li>
+              <li class="item btn btn-success">
+                <a href="{% url 'accounts:signup' %}" style="color: #000!important;font-weight: bold;">Signup</a>
+              </li>
+            {% else %}
+              <li class="item btn btn-danger">
+                <a href="{% url 'accounts:logout' %}" style="color: #000!important;font-weight: bold;">Logout</a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </div>

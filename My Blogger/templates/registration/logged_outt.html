@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+  <div id="colorlib-container">
+    <div class="container">
+      <div class="row row-pb-md">
+        <div class="container justify-content-center col-md-6 mt-5 pt-5 border-2">
+          <h2 class="text-center bg-warning text-black mb-3">Logged out!</h2>
+          <a class="btn btn-primary d-flex w-100 text-black text-center justify-content-center fw-bold" href="{% url 'login' %}">Go To Login Page!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+  <aside id="colorlib-breadcrumbs">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 breadcrumbs text-center">
+          <h2>Blogs Content</h2>
+          <p>
+            <span><a href="{% url 'home:home' %}">Home</a></span> / <span><a href="#">Categories</a></span> / <span>{{ category.name }}</span>
+          </p>
+          <p>
+            " {{ category.description }} "
+          </p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div id="colorlib-container">
+    <div class="container">
+      <div class="row row-pb-md">
+        {% for blog in category_blogs %}
+          <div class="col-md-4">
+            <div class="blog-entry">
+              <div class="blog-img">
+                  {% comment %} <a href="{% url 'blogs:blog_detail' pk=blog.id %}"><img src="{{ blog.image.url }}" class="img-responsive" alt="" /></a> {% endcomment %}
+                  {% comment %} <a href="{% url 'blogs:blog_detail' slug=blog.slug %}"><img src="{{ blog.image.url }}" class="img-responsive" alt="" /></a> {% endcomment %}
+                  <a href="{{ blog.get_absolute_url }}"><img src="{{ blog.image.url }}" class="img-responsive" alt="" /></a>
+              </div>
+              <div class="desc">
+                <p class="meta">
+                  <span class="date">{{ blog.created_at|date:'D d M Y' }}</span>
+                  <span class="pos">By <a href="#">{{ blog.author.first_name }} {{ blog.author.last_name }}</a></span>
+                  <span class="pos">Category: <a href="#">{{ blog.category }}</a></span>
+                </p>
+                <h2><a href="#">{{ blog.title }}</a></h2>
+                <p>
+                  {{ blog.description|truncatewords:25 }} <a href="{{ blog.get_absolute_url }}">Read More..</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <ul class="pagination">
+            {% if category_blogs.has_previous %}
+              <li class="">
+                <a href="?p={{ blogs.previous_page_number }}">&laquo;</a>
+              </li>
+            {% endif %}
+            
+						{% for page in category_blogs.paginator.page_range %}
+              <li>
+                <a href="?p={{ page }}"><span>{{ page }}</span></a>
+              </li>
+            {% endfor %}
+
+            {% if category_blogs.has_next %}
+              <li>
+                <a href="?p={{ blogs.next_page_number }}">&raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

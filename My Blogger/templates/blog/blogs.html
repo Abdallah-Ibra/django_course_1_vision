@@ -1,6 +1,10 @@
-{% extends 'base/base.html' %}
+{% extends "base/base.html" %}
 {% load static %}
+{% load bootstrap5 %}
 
+{% block title %}
+  Blogs
+{% endblock title %}
 {% block content %}
   <aside id="colorlib-breadcrumbs">
     <div class="container">
@@ -14,76 +18,66 @@
       </div>
     </div>
   </aside>
-
   <div id="colorlib-container">
     <div class="container">
+      <div class="form-group row row-pb-md"style="display: flex;align-items: center;">
+        <form method="GET" class="col-md-6">
+          {% comment %} <input type="text" class="form-control" id="search" placeholder="Enter any key to search..." /> {% endcomment %}
+          {% bootstrap_field myfilter.form.description show_label=False %}
+          {% comment %} <button type="submit" class="btn btn-primary" style="margin-top: 6px!important;width: 15%;"><i class="icon-search3"></i></button> {% endcomment %}
+          <button type="submit" class="btn btn-primary" style="margin-top: 6px!important;width: 15%;">Search</button>
+        </form>
+      </div>
       <div class="row row-pb-md">
         {% for blog in blogs %}
           <div class="col-md-4">
             <div class="blog-entry">
-              <div class="blog-img">
-                <a href="{% url 'blogs:blog_detail' pk=blog.id %}"><img src="{{ blog.image.url }}" class="img-responsive" alt="" /></a>
-              </div>
-              <div class="desc">
-                <p class="meta">
-                  {% comment %} <span class="date">20 March 2018</span> {% endcomment %}
-                  <span class="date">{{ blog.published_at|date:'D d M Y' }}</span>
-                  <span class="pos">By <a href="#">{{ blog.author.first_name }} {{ blog.author.last_name }}</a></span>
-                  <span class="pos">Category: <a href="#">{{ blog.category }}</a></span>
-                </p>
-                <h2><a href="#">{{ blog.title }}</a></h2>
-                <p>
-                  {{ blog.description|truncatewords:25 }} <a href="#">Read More..</a>
-                </p>
+              <div class="blog-entry">
+                <div class="blog-img">
+                  {% comment %} <a href="{% url 'blogs:blog_detail' pk=blog.id %}"><img src="{{ blog.image.url }}" class="img-responsive" alt="" /></a> {% endcomment %}
+                  {% comment %} <a href="{% url 'blogs:blog_detail' slug=blog.slug %}"><img src="{{ blog.image.url }}" class="img-responsive" alt="" /></a> {% endcomment %}
+                  <a href="{{ blog.get_absolute_url }}">
+                    <img src="{{ blog.image.url }}" class="img-responsive" alt="" />
+                  </a>
+                </div>
+                <div class="desc">
+                  <p class="meta">
+                    <span class="date">{{ blog.created_at|date:'D d M Y' }}</span>
+                    <span class="pos">By <a href="#">{{ blog.author.first_name }} {{ blog.author.last_name }}</a></span>
+                    <span class="pos">Category: <a href="#">{{ blog.category }}</a></span>
+                  </p>
+                  <h2>
+                    <a href="#">{{ blog.title }}</a>
+                  </h2>
+                  <p>
+                    {{ blog.description|truncatewords:25 }} <a href="{{ blog.get_absolute_url }}">Read More..</a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        {% endfor %}
-      </div>
-
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <ul class="pagination">
-            {% if blogs.has_previous %}
-              <li class="">
-                <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
-              </li>
-            {% endif %}
-            
-						{% for page in blogs.paginator.page_range %}
-              <li>
-                <a href="?page={{ page }}"><span>{{ page }}</span></a>
-              </li>
-            {% endfor %}
-
-            {% if blogs.has_next %}
-              <li>
-                <a href="?page={{ blogs.next_page_number }}">&raquo;</a>
-              </li>
-            {% endif %}
-          </ul>
+          {% endfor %}
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <ul class="pagination">
+              {% if blogs.has_previous %}
+                <li class="">
+                  <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
+                </li>
+              {% endif %}
+              {% for page in blogs.paginator.page_range %}
+                <li>
+                  <a href="?page={{ page }}"><span>{{ page }}</span></a>
+                </li>
+              {% endfor %}
+              {% if blogs.has_next %}
+                <li>
+                  <a href="?page={{ blogs.next_page_number }}">&raquo;</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div id="colorlib-instagram">
-    <div class="row">
-      <div class="col-md-12 col-md-offset-0 colorlib-heading text-center">
-        <h2>Instagram</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="instagram-entry">
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-1.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-2.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-3.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-4.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-5.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-6.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-7.jpg' %});"></a>
-        <a href="#" class="instagram text-center" style="background-image: url({% static 'images/gallery-8.jpg' %});"></a>
-      </div>
-    </div>
-  </div>
-{% endblock %}
+  {% endblock %}
